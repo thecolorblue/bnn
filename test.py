@@ -12,13 +12,13 @@ import util as u
 class ModelTester(object):
 
   def __init__(self, image_dir, label_dir, batch_size, width, height,
-               no_use_skip_connections, base_filter_size, no_use_batch_norm):
+               no_use_skip_connections, base_filter_size, no_use_batch_norm, patch_width_height):
 
     # test data reader
     iter_items = data.img_xys_iterator(image_dir=image_dir,
                                        label_dir=label_dir,
                                        batch_size=batch_size,
-                                       patch_width_height=None,  # i.e. no patchs
+                                       patch_width_height=patch_width_height,
                                        distort_rgb=False,
                                        flip_left_right=False,
                                        random_rotation=False,
