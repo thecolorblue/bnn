@@ -46,7 +46,8 @@ train_imgs, train_xys_bitmaps = data.img_xys_iterator(image_dir=opts.train_image
                                                       flip_left_right=opts.flip_left_right,
                                                       random_rotation=opts.random_rotate,
                                                       repeat=True,
-                                                      width=opts.width, height=opts.height)
+                                                      width=opts.width,
+                                                      height=opts.height)
 
 print("patch train model...")
 train_model = model.Model(train_imgs,
@@ -61,7 +62,7 @@ print("full res test model...")
 tester = test.ModelTester(opts.test_image_dir, opts.label_dir,
                           opts.batch_size, opts.width, opts.height,
                           opts.no_use_skip_connections, opts.base_filter_size,
-                          opts.no_use_batch_norm)
+                          opts.no_use_batch_norm, opts.patch_width_height)
 
 global_step = tf.train.get_or_create_global_step()
 
