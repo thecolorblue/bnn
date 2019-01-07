@@ -45,9 +45,8 @@ class Model(object):
 
       # record bottlenecked shape for resizing back
       # this is clumsy, how to do this more directly from tensors / config?
-      _batch_size, h, w, _depth = e4.get_shape().as_list()
-
-      model = tf.image.resize_nearest_neighbor(e4, [h*2, w*2])
+      _batch_size, h, w, _depth = e3.get_shape().as_list()
+      model = tf.image.resize_nearest_neighbor(e4, [h, w])
       model = slim.conv2d(model, num_outputs=4*base_filter_size, kernel_size=3, scope='d1')
       if use_batch_norm:
         model = slim.batch_norm(model, decay=0.9, is_training=is_training)
@@ -57,7 +56,7 @@ class Model(object):
         model = tf.concat([model, e3], axis=3)
         dump_shape_and_product_of('d1+e3', model)
 
-      model = tf.image.resize_nearest_neighbor(model, [h*4, w*4])
+      model = tf.image.resize_nearest_neighbor(model, [h*2, w*2])
       model = slim.conv2d(model, num_outputs=2*base_filter_size, kernel_size=3, scope='d2')
       if use_batch_norm:
         model = slim.batch_norm(model, decay=0.9, is_training=is_training)
@@ -67,7 +66,7 @@ class Model(object):
         model = tf.concat([model, e2], axis=3)
         dump_shape_and_product_of('d2+e2', model)
 
-      model = tf.image.resize_nearest_neighbor(model, [h*8, w*8])
+      model = tf.image.resize_nearest_neighbor(model, [h*4, w*4])
       model = slim.conv2d(model, num_outputs=base_filter_size, kernel_size=3, scope='d3')
       if use_batch_norm:
         model = slim.batch_norm(model, decay=0.9, is_training=is_training)
